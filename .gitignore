@@ -7,6 +7,11 @@ env/
 __pycache__/
 *.py[cod]
 
+# Local environment variables and secrets
+.env
+.env.*
+!.env.example
+
 # Downloaded MediaPipe model files (setup.sh downloads them)
 models/
 
@@ -14,6 +19,17 @@ models/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Build and packaging output
+build/
+dist/
+*.egg-info/
+
+# Runtime logs
+*.log
 
 # Editors and operating systems
 .vscode/

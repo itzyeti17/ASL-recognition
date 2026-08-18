@@ -28,9 +28,19 @@ Use another camera with `./run.sh --camera 1`. Press **Q**, **Esc**, or
 
 ## Native Linux
 
-Install the dependency and use the same launcher:
+Install the dependencies, download the hand-landmark model, and use the same
+launcher:
 
 ```bash
-python3 -m pip install -r requirements.txt
+sudo apt install python3-venv libgles2
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r requirements.txt
+mkdir -p models
+curl -L \
+  https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task \
+  -o models/hand_landmarker.task
 ./run.sh
 ```
+
+Use `./run.sh --camera 1` to select a different camera.
