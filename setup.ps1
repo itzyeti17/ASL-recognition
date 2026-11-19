@@ -4,6 +4,8 @@ $VenvPython = Join-Path $VenvDir "Scripts\python.exe"
 $Requirements = Join-Path $PSScriptRoot "requirements.txt"
 $ModelDir = Join-Path $PSScriptRoot "models"
 $HandModel = Join-Path $ModelDir "hand_landmarker.task"
+$Classifier = Join-Path $ModelDir "asl_classifier.joblib"
+$Trainer = Join-Path $PSScriptRoot "train_model.py"
 $HandModelUrl = "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task"
 
 if (-not (Test-Path $VenvPython)) {
@@ -31,6 +33,13 @@ if (-not (Test-Path $HandModel)) {
     Write-Host "Downloading the MediaPipe hand-landmark model..."
     New-Item -ItemType Directory -Force -Path $ModelDir | Out-Null
     Invoke-WebRequest -Uri $HandModelUrl -OutFile $HandModel
+}
+
+Write-Host "Training the static ASL letter classifier..."
+& $VenvPython $Trainer --output $Classifier
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Classifier training failed."
+    exit $LASTEXITCODE
 }
 
 Write-Host "Setup complete. Start the app from WSL with ./run.sh"
